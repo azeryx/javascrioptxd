@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Workshop 2</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>project1</title>
+    <link rel="stylesheet" href="projekti1.css">
+    <script type="text/javascript" src="projekti1.js"></script>
 </head>
 
 <body>
