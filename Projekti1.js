@@ -12,31 +12,35 @@ filterOption.addEventListener('click', filterTodo);
 
 // Functions
 function addTodo(event) {
-    event.preventDefault();
-    //todo div
-    const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo");
-    //lista
-    const newTodo = document.createElement("li");
-    newTodo.innerText = todoInput.value;
-    newTodo.classList.add("todo-item");
-    todoDiv.appendChild(newTodo);
-    //Tallentaa TODOn paikallisesti
-    saveLocalTodos(todoInput.value)
-    //Check nappula
-    const completedButton = document.createElement('button');
-    completedButton.innerHTML = '<i class="fas fa-check"></i>';
-    completedButton.classList.add("complete-btn");
-    todoDiv.appendChild(completedButton);
-    //Check roska nappula
-    const trashButton = document.createElement('button');
-    trashButton.innerHTML = '<i class="fas fa-trash"></i>';
-    trashButton.classList.add("trash-btn");
-    todoDiv.appendChild(trashButton);
-    //liitä listaan
-    todoList.appendChild(todoDiv);
-    //poista input value
-    todoInput.value = "";
+    //if tsekkaa onko input ok
+    if (validateForm()){
+        event.preventDefault();
+        //todo div
+        const todoDiv = document.createElement("div");
+        todoDiv.classList.add("todo");
+        //lista
+        const newTodo = document.createElement("li");
+        newTodo.innerText = todoInput.value;
+        newTodo.classList.add("todo-item");
+        todoDiv.appendChild(newTodo);
+        //Tallentaa TODOn paikallisesti
+        saveLocalTodos(todoInput.value)
+        //Check nappula
+        const completedButton = document.createElement('button');
+        completedButton.innerHTML = '<i class="fas fa-check"></i>';
+        completedButton.classList.add("complete-btn");
+        todoDiv.appendChild(completedButton);
+        //Check roska nappula
+        const trashButton = document.createElement('button');
+        trashButton.innerHTML = '<i class="fas fa-trash"></i>';
+        trashButton.classList.add("trash-btn");
+        todoDiv.appendChild(trashButton);
+        //liitä listaan
+        todoList.appendChild(todoDiv);
+        //poista input value
+        todoInput.value = "";
+    }
+    
 }
 
 function deleteCheck(e) {
@@ -141,4 +145,19 @@ function removeLocalTodos(todo) {
     const todoIndex = todo.children[0].innerText;
     todos.splice(todos.indexOf(todoIndex), 1);
     localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+// Validaatio duhh
+function validateForm() {
+    let x = document.forms["todo-form"]["todo-inp"].value;
+    if (x == "") {
+        //onko tyhjä?
+      alert("Text field must not be empty");
+      return false;
+      // onko liian lyhyt?
+    } else if (x.length < 2){
+        alert("Input too short");
+      return false;
+    }
+    return true;
 }
