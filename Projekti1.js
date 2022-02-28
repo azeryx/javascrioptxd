@@ -1,3 +1,4 @@
+
 // selectors
 const todoInput = document.querySelector(".todo-input");
 const todoButton = document.querySelector(".todo-button");
@@ -10,10 +11,12 @@ todoButton.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteCheck);
 filterOption.addEventListener('click', filterTodo);
 
+
 // Functions
 function addTodo(event) {
     //if tsekkaa onko input ok
-    if (validateForm()){
+    if (document.getElementById('inputti').value.length > 2){
+        
         event.preventDefault();
         //todo div
         const todoDiv = document.createElement("div");
@@ -23,8 +26,11 @@ function addTodo(event) {
         newTodo.innerText = todoInput.value;
         newTodo.classList.add("todo-item");
         todoDiv.appendChild(newTodo);
+        
+
         //Tallentaa TODOn paikallisesti
         saveLocalTodos(todoInput.value)
+        
         //Check nappula
         const completedButton = document.createElement('button');
         completedButton.innerHTML = '<i class="fas fa-check"></i>';
@@ -37,10 +43,16 @@ function addTodo(event) {
         todoDiv.appendChild(trashButton);
         //liitä listaan
         todoList.appendChild(todoDiv);
+        
         //poista input value
         todoInput.value = "";
-    }
-    
+        todoInput.style.borderColor = 'white';
+    } else{
+
+        alert('Input is too short');
+        event.preventDefault();
+        todoInput.style.borderColor = 'red';
+    }    
 }
 
 function deleteCheck(e) {
@@ -53,11 +65,13 @@ function deleteCheck(e) {
         todo.addEventListener('transitionend', function () {
             todo.remove();
         });
+        
     }
     //CHECK
     if (item.classList[0] === 'complete-btn') {
         const todo = item.parentElement;
         todo.classList.toggle('completed');
+        
     }
 }
 function filterTodo(e) {
@@ -88,10 +102,9 @@ function filterTodo(e) {
         }
     })
 }
-
 //TALLENNUS
 function saveLocalTodos(todo) {
-    //Tarkistaa onko valmiiksi jotain
+    //Tarkistaa onko valmiiksi jotain 
     let todos;
     if (localStorage.getItem('todos') === null) {
         todos = [];
@@ -101,6 +114,7 @@ function saveLocalTodos(todo) {
 
     todos.push(todo);
     localStorage.setItem('todos', JSON.stringify(todos));
+
 }
 
 function getTodos() {
@@ -145,19 +159,4 @@ function removeLocalTodos(todo) {
     const todoIndex = todo.children[0].innerText;
     todos.splice(todos.indexOf(todoIndex), 1);
     localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-// Validaatio duhh
-function validateForm() {
-    let x = document.forms["todo-form"]["todo-inp"].value;
-    if (x == "") {
-        //onko tyhjä?
-      alert("Text field must not be empty");
-      return false;
-      // onko liian lyhyt?
-    } else if (x.length < 2){
-        alert("Input too short");
-      return false;
-    }
-    return true;
 }
